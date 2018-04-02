@@ -1,22 +1,19 @@
-import com.kizitonwose.time.Interval
-import com.kizitonwose.time.TimeUnit
-import com.kizitonwose.time.plus
-import com.kizitonwose.time.seconds
-import java.util.*
+import java.time.Duration
+import java.time.Instant
 
 class TimeHelper {
-    private val time = Calendar.getInstance()
-    private var modification = 0.seconds
+    private val time = Instant.now()
+    private var modification = Duration.ofSeconds(0)
 
-    fun now(): Calendar {
-        return time + modification
+    fun now(): Instant {
+        return time.plus(modification)
     }
 
-    fun forward(time: Interval<TimeUnit>) {
-        modification += time
+    fun forward(duration: Duration) {
+        modification += duration
     }
 
-    fun backward(time: Interval<TimeUnit>) {
-        modification -= time
+    fun backward(duration: Duration) {
+        modification -= duration
     }
 }

@@ -1,10 +1,11 @@
-import com.kizitonwose.time.minutes
-import com.kizitonwose.time.seconds
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.argThat
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import java.time.Duration
 
 fun retry(times: Int = 10, block: () -> Unit) {
     try {
@@ -29,18 +30,19 @@ class PeriodicJobSpec : Spek({
         it("schedules jobs on a given interval") {
             val job: () -> Unit = mock()
 
-            val periodicJob = PeriodicJob(runEvery = 1.minutes, job = job, now = timeHelper::now)
+            val periodicJob = PeriodicJob(runEvery = Duration.ofMinutes(1), job = job, now = timeHelper::now)
 
             periodicJob.runJob()
-            timeHelper.forward(90.seconds)
+            timeHelper.forward(Duration.ofSeconds(90))
             periodicJob.runJob()
+
             verify(job, times(2)).invoke()
         }
 
         it("runs a job only once on a given bucket") {
             val job: () -> Unit = mock()
 
-            val periodicJob = PeriodicJob(runEvery = 1.minutes, job = job, now = timeHelper::now)
+            val periodicJob = PeriodicJob(runEvery = Duration.ofMinutes(1), job = job, now = timeHelper::now)
             periodicJob.runJob()
             periodicJob.runJob()
 
@@ -54,7 +56,7 @@ class PeriodicJobSpec : Spek({
             val errorHandler: (e: Throwable) -> Unit = mock()
 
             val periodicJob = PeriodicJob(
-                runEvery = 1.minutes, job = job, errorHandler = errorHandler, now = timeHelper::now
+                runEvery = Duration.ofMinutes(1), job = job, errorHandler = errorHandler, now = timeHelper::now
             )
 
             try {

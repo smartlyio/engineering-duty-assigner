@@ -1,0 +1,4 @@
+package dutyAssigner
+
+class Event {
+}
