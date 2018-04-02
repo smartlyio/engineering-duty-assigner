@@ -3,7 +3,6 @@ package flowdock
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.FuelManager
 import flowdock.model.Activity
 import java.nio.charset.Charset
 

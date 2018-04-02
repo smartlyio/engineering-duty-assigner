@@ -1,17 +1,13 @@
 import com.github.kittinunf.fuel.core.FuelManager
 import dutyAssigner.DutyWorker
 import flowdock.FlowdockAPI
-import flowdock.model.Activity
-import flowdock.model.Author
-import flowdock.model.Thread
-import flowdock.model.UpdateAction
 import google.Authorization
 import google.Calendar
 import io.ktor.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import web.dutyAssigner
 import java.time.Duration
-import java.time.Instant
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
