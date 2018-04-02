@@ -46,6 +46,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-jackson:$ktor_version"
     compile "ch.qos.logback:logback-classic:1.2.1"
 
     compile 'com.google.apis:google-api-services-calendar:v3-rev304-1.23.0'
