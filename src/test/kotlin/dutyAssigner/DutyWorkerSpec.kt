@@ -87,7 +87,7 @@ class DutyWorkerSpec : Spek({
                 external_thread_id = "2018-04-02",
                 thread = flowdock.model.Thread(
                     title = "Support duties for 2018-04-02",
-                    status = Thread.Status("2 missing", "red"),
+                    status = Thread.Status("2 duties missing", "red"),
                     actions = listOf(
                         UpdateAction(
                             name = "Book 2018-04-02 Investigator: X",

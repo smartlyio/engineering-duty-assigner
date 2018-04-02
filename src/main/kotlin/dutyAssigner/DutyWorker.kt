@@ -2,13 +2,8 @@ package dutyAssigner
 
 import flowdock.IFlowdockAPI
 import flowdock.model.Activity
-import flowdock.model.Author
-import flowdock.model.Thread
-import flowdock.model.UpdateAction
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 class DutyWorker(val weeksForward: Int = 2, val calendar: ICalendar, val flowdockAPI: IFlowdockAPI) {
     var now = { LocalDate.now() }
@@ -46,23 +41,7 @@ class DutyWorker(val weeksForward: Int = 2, val calendar: ICalendar, val flowdoc
         if (unassignedDuties.isEmpty()) {
             return null
         } else {
-            return Activity(
-                title = "Updated thread",
-                author = Author(name = "Bob"),
-                external_thread_id = start.format(DateTimeFormatter.ISO_DATE),
-                thread = Thread(
-                    title = "Support duties for ${start.format(DateTimeFormatter.ISO_DATE)}",
-                    status = Thread.Status("2 missing", "red"),
-                    actions = unassignedDuties.map { event ->
-                        UpdateAction(
-                            name = "Book ${LocalDate.ofInstant(event.start, ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE) } ${event.description}",
-                            target = UpdateAction.Target(
-                                urlTemplate = "http://www.example.com",
-                                httpMethod = "POST"
-                            )
-                        )
-                    })
-            )
+            return ActicityService.createActivityFromEvents(start, unassignedDuties)
         }
     }
 }
