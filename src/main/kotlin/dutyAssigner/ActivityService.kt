@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 
 const val HOST = "http://duty.ngrok.io" // TODO: Separate dev / test / prod
 
-object ActicityService {
+object ActivityService {
     fun createActivityFromEvents(start: LocalDate, events: List<Event>): Activity {
         return Activity(
             title = "Updated thread",

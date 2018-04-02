@@ -41,7 +41,7 @@ class DutyWorker(val weeksForward: Int = 2, val calendar: ICalendar, val flowdoc
         if (unassignedDuties.isEmpty()) {
             return null
         } else {
-            return ActicityService.createActivityFromEvents(start, unassignedDuties)
+            return ActivityService.createActivityFromEvents(start, unassignedDuties)
         }
     }
 }
