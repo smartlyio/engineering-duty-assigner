@@ -16,7 +16,6 @@ class FlowdockAPI(val flowToken: String) : IFlowdockAPI {
             .withAttribute("flow_token", flowToken)
             .writeValueAsString(activity)
 
-        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
         Fuel.post("${FLOWDOCK_URL}/messages")
             .body(payload, Charset.forName("UTF-8"))
             .response { request, response, result -> println("GOT STATUS CODE: ${response.statusCode}") }

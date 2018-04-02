@@ -1,3 +1,4 @@
+import com.github.kittinunf.fuel.core.FuelManager
 import dutyAssigner.DutyWorker
 import flowdock.FlowdockAPI
 import flowdock.model.Activity
@@ -14,6 +15,8 @@ import java.time.Instant
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
+    FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
+
     val errorHandler = { e: Throwable ->
         println("Got error ${e.message}. Shutting down")
         exitProcess(-1)
