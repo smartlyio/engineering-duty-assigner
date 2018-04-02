@@ -26,7 +26,6 @@ class DutyWorkerSpec : Spek({
             val calendar = mock<ICalendar>()
             val flowdockAPI = mock<IFlowdockAPI>()
 
-
             val worker = DutyWorker(
                 weeksForward = 2,
                 calendar = calendar,

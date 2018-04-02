@@ -1,23 +1,28 @@
 package flowdock.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 sealed class ThreadAction;
 
 data class ViewAction(
-    val type: String = "ViewAction",
     val url: String,
     val name: String
-) : ThreadAction()
+) : ThreadAction() {
+    @JsonProperty("@type") val type: String = "ViewAction"
+}
 
 data class UpdateAction(
-    val type: String = "UpdateAction",
     val name: String,
     val target: Target
 ): ThreadAction() {
+    @JsonProperty("@type") val type: String = "UpdateAction"
+
     data class Target(
-        val type: String = "EntryPoint",
         val urlTemplate: String,
         val httpMethod: String
-    )
+    ) {
+        @JsonProperty("@type") val type: String = "EntryPoint"
+    }
 }
 
 data class Thread(

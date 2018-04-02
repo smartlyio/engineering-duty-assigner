@@ -6,4 +6,6 @@ data class Activity(
   val author: Author,
   val external_thread_id: String,
   val thread: Thread
-)
+) {
+    val event = "activity"
+}

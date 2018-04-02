@@ -1,30 +1,36 @@
-import dutyAssigner.WeeklyDuties
+import dutyAssigner.DutyWorker
+import flowdock.FlowdockAPI
+import flowdock.model.Activity
+import flowdock.model.Author
+import flowdock.model.Thread
+import flowdock.model.UpdateAction
 import google.Authorization
 import google.Calendar
 import io.ktor.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import java.time.Duration
+import java.time.Instant
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-    WeeklyDuties().update()
-    exitProcess(-1)
     val errorHandler = { e: Throwable ->
         println("Got error ${e.message}. Shutting down")
         exitProcess(-1)
     }
 
+    val credential = Authorization.authorize()
+    val calendar = Calendar(credential)
+    val dutyWorker = DutyWorker(calendar = calendar, flowdockAPI =  FlowdockAPI(System.getenv("FLOW_TOKEN")))
+
     val job = PeriodicJob(
-        runEvery= Duration.ofHours(1),
-        job = {},
+        runEvery = Duration.ofMinutes(1),
+        job = dutyWorker::perform,
         errorHandler = errorHandler
     )
 
     job.start()
 
-    val credential = Authorization.authorize()
-    val events = Calendar(credential).events(42)
 
     val server = embeddedServer(
         Netty,
