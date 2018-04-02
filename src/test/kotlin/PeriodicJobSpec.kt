@@ -30,7 +30,7 @@ class PeriodicJobSpec : Spek({
         it("schedules jobs on a given interval") {
             val job: () -> Unit = mock()
 
-            val periodicJob = PeriodicJob(runEvery = Duration.ofMinutes(1), job = job, now = timeHelper::now)
+            val periodicJob = PeriodicJob(runEvery = Duration.ofMinutes(1), job = job, now = timeHelper::nowInstant)
 
             periodicJob.runJob()
             timeHelper.forward(Duration.ofSeconds(90))
@@ -42,7 +42,7 @@ class PeriodicJobSpec : Spek({
         it("runs a job only once on a given bucket") {
             val job: () -> Unit = mock()
 
-            val periodicJob = PeriodicJob(runEvery = Duration.ofMinutes(1), job = job, now = timeHelper::now)
+            val periodicJob = PeriodicJob(runEvery = Duration.ofMinutes(1), job = job, now = timeHelper::nowInstant)
             periodicJob.runJob()
             periodicJob.runJob()
 
@@ -56,7 +56,7 @@ class PeriodicJobSpec : Spek({
             val errorHandler: (e: Throwable) -> Unit = mock()
 
             val periodicJob = PeriodicJob(
-                runEvery = Duration.ofMinutes(1), job = job, errorHandler = errorHandler, now = timeHelper::now
+                runEvery = Duration.ofMinutes(1), job = job, errorHandler = errorHandler, now = timeHelper::nowInstant
             )
 
             try {
