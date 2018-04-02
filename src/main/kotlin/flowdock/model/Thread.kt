@@ -2,6 +2,17 @@ package flowdock.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+data class Thread(
+    val title: String,
+    val body: String? = null,
+    val externalUrl: String? = null,
+    val status: Status? = null,
+    val actions: List<ThreadAction>? = null,
+    val fields: Map<String, String>? = null
+) {
+    data class Status(val value: String, val color: String)
+}
+
 sealed class ThreadAction;
 
 data class ViewAction(
@@ -23,15 +34,4 @@ data class UpdateAction(
     ) {
         @JsonProperty("@type") val type: String = "EntryPoint"
     }
-}
-
-data class Thread(
-    val title: String,
-    val body: String? = null,
-    val externalUrl: String? = null,
-    val status: Status? = null,
-    val actions: List<ThreadAction>? = null,
-    val fields: Map<String, String>? = null
-) {
-    data class Status(val value: String, val color: String)
 }
