@@ -34,7 +34,7 @@ class ActivityServiceSpec : Spek({
             )
             val activity = ActicityService.createActivityFromEvents(LocalDate.parse("2018-04-02"), events)
             activity.thread.actions!! shouldEqual listOf(
-                UpdateAction("Book 2018-04-02 Investigator: X", UpdateAction.Target("http://www.example.com", "POST"))
+                UpdateAction("Book 2018-04-02 Investigator: X", UpdateAction.Target("http://duty.ngrok.io/book/2018-04-02/Investigator", "POST"))
             )
         }
     }

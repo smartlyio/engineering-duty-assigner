@@ -8,6 +8,8 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
+const val HOST = "http://duty.ngrok.io" // TODO: Separate dev / test / prod
+
 object ActicityService {
     fun createActivityFromEvents(start: LocalDate, events: List<Event>): Activity {
         return Activity(
@@ -21,7 +23,7 @@ object ActicityService {
                     UpdateAction(
                         name = "Book ${LocalDate.ofInstant(event.start, ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE) } ${event.description}",
                         target = UpdateAction.Target(
-                            urlTemplate = "http://www.example.com",
+                            urlTemplate = formatUrlTemplate(event),
                             httpMethod = "POST"
                         )
                     )
@@ -37,4 +39,10 @@ object ActicityService {
         }
     }
 
+    private fun formatUrlTemplate(event: Event): String {
+        val startDate = LocalDate.ofInstant(event.start, ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE)
+        val type = Regex("(.*):").find(event.description)?.groupValues?.get(1)
+
+        return "$HOST/book/$startDate/$type"
+    }
 }
