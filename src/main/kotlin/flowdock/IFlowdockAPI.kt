@@ -1,5 +1,7 @@
 package flowdock
 
+import flowdock.model.Activity
+
 interface IFlowdockAPI {
-    fun execute(events: List<Action>)
+    fun createActivity(activity: Activity)
 }

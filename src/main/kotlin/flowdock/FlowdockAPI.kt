@@ -1,7 +1,9 @@
 package flowdock
 
+import flowdock.model.Activity
+
 object FlowdockAPI : IFlowdockAPI {
-    override fun execute(events: List<Action>) {
+    override fun createActivity(activity: Activity) {
         TODO("not implemented")
     }
 }

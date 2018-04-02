@@ -3,29 +3,16 @@ package dutyAssigner
 
 import TimeHelper
 import com.nhaarman.mockito_kotlin.*
-import flowdock.Action
-import flowdock.CreateActivity
 import flowdock.IFlowdockAPI
 import flowdock.model.Activity
 import flowdock.model.Author
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
-import org.amshove.kluent.shouldEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import java.time.Instant
 import java.time.LocalDate
-
-class TestFlowdockAPI : IFlowdockAPI {
-    var events = listOf<Action>()
-
-    override fun execute(events: List<Action>) {
-        this.events += events
-    }
-
-
-}
 
 class DutyWorkerSpec : Spek({
     var timeHelper = TimeHelper()
@@ -37,7 +24,7 @@ class DutyWorkerSpec : Spek({
     describe("perform") {
         it("fetches events for correct time frames") {
             val calendar = mock<ICalendar>()
-            val flowdockAPI = TestFlowdockAPI()
+            val flowdockAPI = mock<IFlowdockAPI>()
 
 
             val worker = DutyWorker(
@@ -84,7 +71,7 @@ class DutyWorkerSpec : Spek({
                 )
             }
 
-            val flowdockAPI = TestFlowdockAPI()
+            val flowdockAPI = mock<IFlowdockAPI>()
 
             val worker = DutyWorker(
                 weeksForward = 1,
@@ -95,33 +82,31 @@ class DutyWorkerSpec : Spek({
 
             worker.perform()
 
-            flowdockAPI.events shouldEqual listOf(
-                CreateActivity(Activity(
-                    title = "Updated thread",
-                    author = Author(name = "Bob"),
-                    external_thread_id = "2018-04-02",
-                    thread = flowdock.model.Thread(
-                        title = "Support duties for 2018-04-02",
-                        status = Thread.Status("2 missing", "red"),
-                        actions = listOf(
-                            UpdateAction(
-                                name = "Book 2018-04-02 Investigator: X",
-                                target = UpdateAction.Target(
-                                    urlTemplate = "http://www.example.com",
-                                    httpMethod = "POST"
-                                )
-                            ),
-                            UpdateAction(
-                                name = "Book 2018-04-03 Tech Support Duty: X",
-                                target = UpdateAction.Target(
-                                    urlTemplate = "http://www.example.com",
-                                    httpMethod = "POST"
-                                )
+            verify(flowdockAPI).createActivity(eq(Activity(
+                title = "Updated thread",
+                author = Author(name = "Bob"),
+                external_thread_id = "2018-04-02",
+                thread = flowdock.model.Thread(
+                    title = "Support duties for 2018-04-02",
+                    status = Thread.Status("2 missing", "red"),
+                    actions = listOf(
+                        UpdateAction(
+                            name = "Book 2018-04-02 Investigator: X",
+                            target = UpdateAction.Target(
+                                urlTemplate = "http://www.example.com",
+                                httpMethod = "POST"
+                            )
+                        ),
+                        UpdateAction(
+                            name = "Book 2018-04-03 Tech Support Duty: X",
+                            target = UpdateAction.Target(
+                                urlTemplate = "http://www.example.com",
+                                httpMethod = "POST"
                             )
                         )
                     )
-                ))
-            )
+                )
+            )))
         }
     }
 })
