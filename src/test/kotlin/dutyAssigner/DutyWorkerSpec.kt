@@ -50,18 +50,21 @@ class DutyWorkerSpec : Spek({
             val calendar = mock<ICalendar> {
                 on { events(any(), any()) } doReturn listOf(
                     Event(
+                        "1",
                         Instant.parse("2018-04-02T09:00:00Z"),
                         Instant.parse("2018-04-02T09:00:00Z"),
                         "Oskari",
                         "Investigator: X"
                     ),
                     Event(
+                        "2",
                         Instant.parse("2018-04-03T09:00:00Z"),
                         Instant.parse("2018-04-03T09:00:00Z"),
                         "Sampo",
                         "Investigator: Sampo"
                     ),
                     Event(
+                        "3",
                         Instant.parse("2018-04-03T09:00:00Z"),
                         Instant.parse("2018-04-03T09:00:00Z"),
                         "Valtteri",
@@ -92,14 +95,14 @@ class DutyWorkerSpec : Spek({
                         UpdateAction(
                             name = "Book 2018-04-02 Investigator: X",
                             target = UpdateAction.Target(
-                                urlTemplate = "http://www.example.com",
+                                urlTemplate = "http://duty.ngrok.io/book/1",
                                 httpMethod = "POST"
                             )
                         ),
                         UpdateAction(
                             name = "Book 2018-04-03 Tech Support Duty: X",
                             target = UpdateAction.Target(
-                                urlTemplate = "http://www.example.com",
+                                urlTemplate = "http://duty.ngrok.io/book/3",
                                 httpMethod = "POST"
                             )
                         )

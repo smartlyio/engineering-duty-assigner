@@ -35,6 +35,7 @@ class Calendar(val credential: Credential) : ICalendar {
 
     private fun toDutyAssignerEvent(googleEvent: GoogleEvent): Event {
         return Event(
+            id = googleEvent.id,
             start = Instant.ofEpochMilli(googleEvent.start.dateTime.value),
             end = Instant.ofEpochMilli(googleEvent.end.dateTime.value),
             assignee = "Oskari", // TODO

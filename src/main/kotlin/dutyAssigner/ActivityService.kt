@@ -43,6 +43,6 @@ object ActivityService {
         val startDate = LocalDate.ofInstant(event.start, ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE)
         val type = Regex("(.*):").find(event.description)?.groupValues?.get(1)
 
-        return "$HOST/book/$startDate/$type"
+        return "$HOST/book/${event.id}"
     }
 }
