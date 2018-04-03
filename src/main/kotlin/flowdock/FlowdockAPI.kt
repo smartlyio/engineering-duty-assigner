@@ -17,7 +17,7 @@ class FlowdockAPI(val flowToken: String) : IFlowdockAPI {
 
         Fuel.post("${FLOWDOCK_URL}/messages")
             .body(payload, Charset.forName("UTF-8"))
-            .response { request, response, result -> println("GOT STATUS CODE: ${response.statusCode}") }
+            .response { _, response, _ -> println("GOT STATUS CODE: ${response.statusCode}") }
     }
 
     private fun <T> objectMapper(targetClass: Class<T>): ObjectMapper =
