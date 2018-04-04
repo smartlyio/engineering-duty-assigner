@@ -2,19 +2,16 @@ package koin.ext
 
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.Spec
-import org.jetbrains.spek.api.dsl.SpecBody
 import org.jetbrains.spek.api.lifecycle.GroupScope
 import org.jetbrains.spek.api.lifecycle.LifecycleListener
 import org.jetbrains.spek.api.lifecycle.TestScope
-import org.koin.KoinContext
-import org.koin.core.parameter.Parameters
 import org.koin.dsl.module.Module
+import org.koin.standalone.KoinComponent
 import org.koin.standalone.StandAloneContext
 
-inline fun <reified T> SpecBody.inject(name: String = "", noinline parameters: Parameters = { emptyMap()}) =
-    lazy { (StandAloneContext.koinContext as KoinContext).get<T>(name, parameters)}
+class KoinSpec(val root: Spec) : KoinComponent, Spec by root
 
-abstract class KoinSpek(modules: List<Module>, val koinSpec: Spec.() -> Unit): Spek({
+abstract class KoinSpek(modules: List<Module>, koinSpec: KoinSpec.() -> Unit): Spek({
     registerListener(object: LifecycleListener {
         override fun beforeExecuteTest(test: TestScope) {
             StandAloneContext.closeKoin()
@@ -26,5 +23,5 @@ abstract class KoinSpek(modules: List<Module>, val koinSpec: Spec.() -> Unit): S
         }
     })
 
-    koinSpec.invoke(this)
+    koinSpec.invoke(KoinSpec(this))
 })

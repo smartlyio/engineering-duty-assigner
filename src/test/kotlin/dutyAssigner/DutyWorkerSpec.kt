@@ -9,11 +9,11 @@ import flowdock.model.Author
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
 import koin.ext.KoinSpek
-import koin.ext.inject
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.koin.dsl.module.applicationContext
+import org.koin.standalone.inject
 import java.time.Instant
 import java.time.LocalDate
 
