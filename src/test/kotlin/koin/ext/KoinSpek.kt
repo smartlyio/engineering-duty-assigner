@@ -11,18 +11,14 @@ import org.koin.core.parameter.Parameters
 import org.koin.dsl.module.Module
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.StandAloneContext
+import org.koin.standalone.StandAloneContext.closeKoin
 
 class KoinSpec(val root: Spec) : KoinComponent, Spec by root
 
-abstract class KoinSpek(modules: List<Module>, koinSpec: KoinSpec.() -> Unit): Spek({
+abstract class KoinSpek(koinSpec: KoinSpec.() -> Unit): Spek({
     registerListener(object: LifecycleListener {
-        override fun beforeExecuteTest(test: TestScope) {
-            StandAloneContext.closeKoin()
-            StandAloneContext.startKoin(modules)
-        }
-
         override fun afterExecuteGroup(group: GroupScope) {
-            StandAloneContext.closeKoin()
+            closeKoin()
         }
     })
 

@@ -9,10 +9,11 @@ import flowdock.model.Author
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
 import koin.ext.KoinSpek
-import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.koin.dsl.module.applicationContext
+import org.koin.standalone.StandAloneContext.closeKoin
+import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
 import java.time.Instant
 import java.time.LocalDate
@@ -22,7 +23,11 @@ val testKoinModule = applicationContext {
     bean { mock<ICalendar>() }
 }
 
-class DutyWorkerSpec : KoinSpek(listOf(testKoinModule), {
+class DutyWorkerSpec : KoinSpek({
+    beforeEachTest {
+        closeKoin()
+        startKoin(listOf(testKoinModule))
+    }
 
     var timeHelper = TimeHelper()
 

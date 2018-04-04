@@ -10,6 +10,9 @@ import org.jetbrains.spek.api.dsl.it
 import org.koin.dsl.module.applicationContext
 import org.koin.standalone.inject
 import KoinModule
+import org.koin.standalone.StandAloneContext
+import org.koin.standalone.StandAloneContext.closeKoin
+import org.koin.standalone.StandAloneContext.startKoin
 
 interface ISomeMockedInterface {
     fun foo(a: String, b: String)
@@ -19,7 +22,12 @@ val testKoinModule = applicationContext {
     bean { mock<ISomeMockedInterface>() }
 }
 
-class KoinSpekSpec : KoinSpek(listOf(testKoinModule), {
+class KoinSpekSpec : KoinSpek({
+    beforeEachTest {
+        closeKoin()
+        startKoin(listOf(testKoinModule))
+    }
+
     describe("koinspek test") {
         it("first calendar") {
             val mockedInterface: ISomeMockedInterface by inject()
