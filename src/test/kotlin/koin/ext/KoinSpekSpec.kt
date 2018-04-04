@@ -9,6 +9,7 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.koin.dsl.module.applicationContext
 import org.koin.standalone.inject
+import KoinModule
 
 interface ISomeMockedInterface {
     fun foo(a: String, b: String)
@@ -30,6 +31,10 @@ class KoinSpekSpec : KoinSpek(listOf(testKoinModule), {
         it("second calendar") {
             val mockedInterface: ISomeMockedInterface by inject()
             verify(mockedInterface, never()).foo(eq("foo"), eq("bar"))
+        }
+
+        it("prints dryRun") {
+            this.dryRun()
         }
     }
 })
