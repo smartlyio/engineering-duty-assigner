@@ -8,13 +8,22 @@ import flowdock.model.Activity
 import flowdock.model.Author
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
+import koin.ext.KoinSpek
+import koin.ext.inject
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
+import org.koin.dsl.module.applicationContext
 import java.time.Instant
 import java.time.LocalDate
 
-class DutyWorkerSpec : Spek({
+
+val testKoinModule = applicationContext {
+    bean { mock<ICalendar>() }
+}
+
+class DutyWorkerSpec : KoinSpek(listOf(testKoinModule), {
+
     var timeHelper = TimeHelper()
 
     beforeEachTest {
@@ -23,12 +32,11 @@ class DutyWorkerSpec : Spek({
 
     describe("perform") {
         it("fetches events for correct time frames") {
-            val calendar = mock<ICalendar>()
             val flowdockAPI = mock<IFlowdockAPI>()
+            val calendar: ICalendar by inject()
 
             val worker = DutyWorker(
                 weeksForward = 2,
-                calendar = calendar,
                 flowdockAPI = flowdockAPI,
                 now = timeHelper::nowLocalDate
             )
@@ -47,37 +55,36 @@ class DutyWorkerSpec : Spek({
         }
 
         it("sends Flowdock activity message from new state") {
-            val calendar = mock<ICalendar> {
-                on { events(any(), any()) } doReturn listOf(
-                    Event(
-                        "1",
-                        Instant.parse("2018-04-02T09:00:00Z"),
-                        Instant.parse("2018-04-02T09:00:00Z"),
-                        "Oskari",
-                        "Investigator: X"
-                    ),
-                    Event(
-                        "2",
-                        Instant.parse("2018-04-03T09:00:00Z"),
-                        Instant.parse("2018-04-03T09:00:00Z"),
-                        "Sampo",
-                        "Investigator: Sampo"
-                    ),
-                    Event(
-                        "3",
-                        Instant.parse("2018-04-03T09:00:00Z"),
-                        Instant.parse("2018-04-03T09:00:00Z"),
-                        "Valtteri",
-                        "Tech Support Duty: X"
-                    )
+            val calendar: ICalendar by inject()
+
+            whenever(calendar.events(any(), any())).thenReturn(listOf(
+                Event(
+                    "1",
+                    Instant.parse("2018-04-02T09:00:00Z"),
+                    Instant.parse("2018-04-02T09:00:00Z"),
+                    "Oskari",
+                    "Investigator: X"
+                ),
+                Event(
+                    "2",
+                    Instant.parse("2018-04-03T09:00:00Z"),
+                    Instant.parse("2018-04-03T09:00:00Z"),
+                    "Sampo",
+                    "Investigator: Sampo"
+                ),
+                Event(
+                    "3",
+                    Instant.parse("2018-04-03T09:00:00Z"),
+                    Instant.parse("2018-04-03T09:00:00Z"),
+                    "Valtteri",
+                    "Tech Support Duty: X"
                 )
-            }
+            ))
 
             val flowdockAPI = mock<IFlowdockAPI>()
 
             val worker = DutyWorker(
                 weeksForward = 1,
-                calendar = calendar,
                 flowdockAPI = flowdockAPI,
                 now = timeHelper::nowLocalDate
             )
