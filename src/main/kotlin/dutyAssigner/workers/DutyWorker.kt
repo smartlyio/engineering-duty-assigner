@@ -1,10 +1,12 @@
-package dutyAssigner
+package dutyAssigner.workers
 
+import dutyAssigner.Event
+import dutyAssigner.ICalendar
+import dutyAssigner.services.ActivityService
 import flowdock.IFlowdockAPI
 import flowdock.model.Activity
 import java.time.DayOfWeek
 import java.time.LocalDate
-import org.koin.ktor.ext.inject
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 

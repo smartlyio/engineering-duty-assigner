@@ -1,8 +1,10 @@
-package dutyAssigner
+package dutyAssigner.workers
 
 
 import TimeHelper
 import com.nhaarman.mockito_kotlin.*
+import dutyAssigner.Event
+import dutyAssigner.ICalendar
 import flowdock.IFlowdockAPI
 import flowdock.model.Activity
 import flowdock.model.Author
