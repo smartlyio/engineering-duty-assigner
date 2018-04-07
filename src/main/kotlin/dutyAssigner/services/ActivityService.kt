@@ -1,5 +1,6 @@
-package dutyAssigner
+package dutyAssigner.services
 
+import dutyAssigner.Event
 import flowdock.model.Activity
 import flowdock.model.Author
 import flowdock.model.Thread
@@ -40,6 +41,6 @@ object ActivityService {
     }
 
     private fun formatUrlTemplate(event: Event): String {
-        return "$HOST/book/${event.id}"
+        return "${HOST}/book/${event.id}"
     }
 }

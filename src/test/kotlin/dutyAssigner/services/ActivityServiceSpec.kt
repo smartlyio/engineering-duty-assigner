@@ -1,6 +1,7 @@
-package dutyAssigner
+package dutyAssigner.services
 
 
+import dutyAssigner.Event
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
 import org.amshove.kluent.shouldEqual
