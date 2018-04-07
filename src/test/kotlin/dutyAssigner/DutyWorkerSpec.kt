@@ -8,10 +8,10 @@ import flowdock.model.Activity
 import flowdock.model.Author
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
-import koin.ext.KoinSpek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.koin.dsl.module.applicationContext
+import org.koin.spek.KoinSpek
 import org.koin.standalone.StandAloneContext.closeKoin
 import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject

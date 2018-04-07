@@ -40,6 +40,10 @@ repositories {
     maven { url "https://dl.bintray.com/kotlin/ktor" }
     maven { url "http://dl.bintray.com/jetbrains/spek" }
     maven { url "https://jitpack.io" }
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -51,7 +55,7 @@ dependencies {
     compile "ch.qos.logback:logback-classic:1.2.1"
 
     compile "org.koin:koin-ktor:$koin_version"
-    testCompile "org.koin:koin-test:$koin_version"
+    testCompile "org.koin:koin-spek:$koin_version"
 
 
     compile 'com.google.apis:google-api-services-calendar:v3-rev304-1.23.0'
