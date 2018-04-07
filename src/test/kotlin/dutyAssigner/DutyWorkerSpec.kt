@@ -21,6 +21,7 @@ import java.time.LocalDate
 
 val testKoinModule = applicationContext {
     bean { mock<ICalendar>() }
+    bean { mock <IFlowdockAPI>() }
 }
 
 class DutyWorkerSpec : KoinSpek({
@@ -37,12 +38,10 @@ class DutyWorkerSpec : KoinSpek({
 
     describe("perform") {
         it("fetches events for correct time frames") {
-            val flowdockAPI = mock<IFlowdockAPI>()
             val calendar: ICalendar by inject()
 
             val worker = DutyWorker(
                 weeksForward = 2,
-                flowdockAPI = flowdockAPI,
                 now = timeHelper::nowLocalDate
             )
 
@@ -86,11 +85,10 @@ class DutyWorkerSpec : KoinSpek({
                 )
             ))
 
-            val flowdockAPI = mock<IFlowdockAPI>()
+            val flowdockAPI: IFlowdockAPI by inject()
 
             val worker = DutyWorker(
                 weeksForward = 1,
-                flowdockAPI = flowdockAPI,
                 now = timeHelper::nowLocalDate
             )
 

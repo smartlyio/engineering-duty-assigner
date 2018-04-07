@@ -8,15 +8,15 @@ import org.koin.ktor.ext.inject
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
-class DutyWorker(val weeksForward: Int = 2, val flowdockAPI: IFlowdockAPI) : KoinComponent {
+class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
     var now = { LocalDate.now() }
     val calendar: ICalendar by inject()
+    val flowdockAPI: IFlowdockAPI by inject()
 
     constructor(
-        flowdockAPI: IFlowdockAPI,
         weeksForward: Int,
         now: () -> LocalDate
-    ): this(weeksForward, flowdockAPI) {
+    ): this(weeksForward) {
         this.now = now
     }
 

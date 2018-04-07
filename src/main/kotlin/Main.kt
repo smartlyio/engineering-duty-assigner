@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
         exitProcess(-1)
     }
 
-    val dutyWorker = DutyWorker(flowdockAPI =  FlowdockAPI(System.getenv("FLOW_TOKEN")))
+    val dutyWorker = DutyWorker()
 
     val job = PeriodicJob(
         runEvery = Duration.ofMinutes(1),
