@@ -1,7 +1,7 @@
 package web
 
-import google.Authorization
-import google.Calendar
+import dutyAssigner.ICalendar
+import flowdock.IFlowdockAPI
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -13,6 +13,7 @@ import io.ktor.response.respondText
 import io.ktor.routing.post
 import io.ktor.routing.routing
 import kotlinx.coroutines.experimental.async
+import org.koin.ktor.ext.inject
 
 fun Application.dutyAssigner() {
     install(ContentNegotiation) {
@@ -24,12 +25,19 @@ fun Application.dutyAssigner() {
         post("book/{eventId}") {
             val updateAction = call.receive<UpdateAction>()
 
-            val credential = Authorization.authorize()
-            val calendar = Calendar(credential)
-
             async {
                 // Book and kick an update to thread
-                // calendar.book(updateAction.agent.name, call)
+                val calendar: ICalendar by inject()
+                val flowdockAPI: IFlowdockAPI by inject()
+
+                val eventId = call.parameters["eventId"]
+                if (eventId !== null) {
+                    val event = calendar.event(eventId)
+                    val bookedEvent = event.book(updateAction.agent.name)
+
+                    calendar.updateEvent(bookedEvent)
+                    //flowdockAPI.createActivity()
+                }
             }.await()
 
             call.respondText { "OK" }

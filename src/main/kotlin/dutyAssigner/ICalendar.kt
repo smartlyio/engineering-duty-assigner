@@ -3,6 +3,7 @@ package dutyAssigner
 import java.time.LocalDate
 
 interface ICalendar {
+    fun event(eventId: String): Event
     fun events(start: LocalDate, end: LocalDate): List<Event>
-    fun book(assignee: String, eventId: String)
+    fun updateEvent(event: Event)
 }

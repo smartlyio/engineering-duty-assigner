@@ -4,7 +4,6 @@ import com.google.api.client.auth.oauth2.Credential
 import com.google.api.client.util.DateTime
 import dutyAssigner.Event
 import dutyAssigner.ICalendar
-import kotlinx.coroutines.experimental.async
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -14,6 +13,11 @@ import com.google.api.services.calendar.model.Event as GoogleEvent
 const val CALENDAR_ID = "9n92ukjvquobse8k6efup7jalk@group.calendar.google.com" // Extract me to somewhere else
 
 class Calendar(val credential: Credential) : ICalendar {
+    override fun event(eventId: String): Event {
+        val service = service()
+        return service.events().get(CALENDAR_ID, eventId).execute().let(::toDutyAssignerEvent)
+    }
+
     override fun events(start: LocalDate, end: LocalDate): List<Event> {
         val service = service()
         return service.events().list(CALENDAR_ID)
@@ -26,11 +30,10 @@ class Calendar(val credential: Credential) : ICalendar {
 
     }
 
-    override fun book(assignee: String, eventId: String) {
+    override fun updateEvent(event: Event) {
         val service = service()
-        val event = service.events().get(CALENDAR_ID, eventId).execute()
-        event.summary = "UPDATE ME TO SOMETHING MEANINGFUL"
-        service.events().update("foo", "bar", event).execute()
+        val googleEvent = service.events().get(CALENDAR_ID, event.id).execute().let(updateFromDutyAssignerEvent(event))
+        service.events().update(CALENDAR_ID, event.id, googleEvent).execute()
     }
 
     private fun service(): GoogleCalendar {
@@ -49,4 +52,10 @@ class Calendar(val credential: Credential) : ICalendar {
             description = googleEvent.summary
         )
     }
+
+    private fun updateFromDutyAssignerEvent(dutyAssignerEvent: Event): (googleEvent: GoogleEvent) -> GoogleEvent =
+        { googleEvent: GoogleEvent ->
+            googleEvent.summary = dutyAssignerEvent.description
+            googleEvent
+        }
 }
