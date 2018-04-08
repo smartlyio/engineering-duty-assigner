@@ -1,5 +1,5 @@
 import com.github.kittinunf.fuel.core.FuelManager
-import dutyAssigner.DutyWorker
+import dutyAssigner.workers.DutyWorker
 import dutyAssigner.ICalendar
 import flowdock.FlowdockAPI
 import flowdock.IFlowdockAPI

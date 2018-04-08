@@ -8,4 +8,11 @@ data class Event(
     val end: Instant,
     val assignee: String,
     val description: String
-)
+) {
+    fun book(newAssignee: String): Event {
+        return this.copy(assignee = newAssignee, description = "${getDescriptionPrefix()}: $newAssignee" )
+    }
+
+    private fun getDescriptionPrefix(): String? =
+        Regex("(.+):\\s(.+)").find(description)?.groups?.get(1)?.value
+}
