@@ -14,7 +14,6 @@ import org.koin.standalone.inject
 
 class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
     var now = { LocalDate.now() }
-    val calendar: ICalendar by inject()
     val flowdockAPI: IFlowdockAPI by inject()
 
     constructor(
@@ -26,7 +25,7 @@ class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
 
     fun perform() {
         val startTimes = (0 until weeksForward).map { i ->
-            now().plusDays(7L * i) .with(DayOfWeek.MONDAY)
+            now().plusDays(7L * i).with(DayOfWeek.MONDAY)
         }
 
         startTimes.forEach(::performForWeek)
