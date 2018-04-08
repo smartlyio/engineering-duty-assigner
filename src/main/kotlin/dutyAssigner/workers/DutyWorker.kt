@@ -41,8 +41,7 @@ class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
     }
 
     private fun createFlowdockActivity(start: LocalDate, events: List<Event>): Activity? {
-        val unassignedDuties = events.filter { it.description matches Regex(".+: X$") }
-
+        val unassignedDuties = DutyService.filterUnassignedDuties(events)
         if (unassignedDuties.isEmpty()) {
             return null
         } else {

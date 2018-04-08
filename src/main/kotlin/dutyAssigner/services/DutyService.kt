@@ -14,4 +14,7 @@ object DutyService: KoinComponent {
         return calendar.events(start, end)
     }
 
+    fun filterUnassignedDuties(events: List<Event>): List<Event> =
+        events.filter { it.description matches Regex(".+: X$") }
+
 }
