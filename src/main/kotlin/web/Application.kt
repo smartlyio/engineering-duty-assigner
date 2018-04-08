@@ -1,6 +1,9 @@
 package web
 
 import dutyAssigner.ICalendar
+import dutyAssigner.services.ActivityService
+import dutyAssigner.services.DutyService
+import extensions.startOfWeek
 import flowdock.IFlowdockAPI
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -14,6 +17,8 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import kotlinx.coroutines.experimental.async
 import org.koin.ktor.ext.inject
+import java.time.Instant
+import java.time.LocalDate
 
 fun Application.dutyAssigner() {
     install(ContentNegotiation) {
@@ -36,7 +41,12 @@ fun Application.dutyAssigner() {
                     val bookedEvent = event.book(updateAction.agent.name)
 
                     calendar.updateEvent(bookedEvent)
-                    //flowdockAPI.createActivity()
+                    flowdockAPI.createActivity(ActivityService.createActivityFromEvents(
+                        "booked an event: ${bookedEvent.description}",
+                        updateAction.agent.toAuthor(),
+                        bookedEvent.start.startOfWeek(),
+                        DutyService.eventsForWeek(bookedEvent.start.startOfWeek()).let(DutyService::filterUnassignedDuties)
+                    ))
                 }
             }.await()
 

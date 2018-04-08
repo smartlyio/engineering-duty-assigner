@@ -1,6 +1,7 @@
 package web
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import flowdock.model.Author
 
 data class UpdateAction(
     @JsonProperty("@type") val type: String,
@@ -13,7 +14,9 @@ data class UpdateAction(
         val name: String,
         val url: String,
         val image: String
-    )
+    ) {
+        fun toAuthor(): Author = let { agent -> Author(agent.name, agent.image) }
+    }
 
     data class Target(
         @JsonProperty("@type") val type: String,

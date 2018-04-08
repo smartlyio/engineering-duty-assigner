@@ -92,21 +92,13 @@ class ApplicationSpec : KoinSpek({
                     val flowdockAPI: IFlowdockAPI by inject()
                     verify(flowdockAPI).createActivity(eq(
                         Activity(
-                            title = "Booked a duty: TODO duty specs",
-                            author = Author("Oskari"),
+                            title = "booked an event: Investigator: Oskari",
+                            author = Author(name = "Oskari", avatar="https://d2cxspbh1aoie1.cloudfront.net/avatars/97456b60d8655e12d0922c1afb88f5ca/120"),
                             external_thread_id = "2018-04-09",
                             thread = flowdock.model.Thread(
                                 title = "Support duties for 2018-04-09",
-                                status = Thread.Status("1 duties missing", "red"),
-                                actions = listOf(
-                                    UpdateAction(
-                                        name = "Book 2018-04-10 Tech Support Duty: X",
-                                        target = UpdateAction.Target(
-                                            urlTemplate = "http://duty.ngrok.io/book/3",
-                                            httpMethod = "POST"
-                                        )
-                                    )
-                                )
+                                status = Thread.Status("All booked", "green"),
+                                actions = listOf()
                             )
                         )
                     ))
