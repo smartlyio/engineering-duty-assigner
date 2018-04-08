@@ -39,7 +39,7 @@ class ApplicationSpec : KoinSpek({
     engine.application.dutyAssigner()
 
     with(engine) {
-        describe("updateEvent/{eventId}") {
+        describe("book/{eventId}") {
             val updateAction = """
                 {
                   "@type": "UpdateAction",
@@ -52,7 +52,7 @@ class ApplicationSpec : KoinSpek({
                   },
                   "target": {
                     "@type": "EntryPoint",
-                    "urlTemplate": "http://duty.ngrok.io/updateEvent/123",
+                    "urlTemplate": "http://duty.ngrok.io/book/123",
                     "httpMethod": "POST"
                   }
                 }
