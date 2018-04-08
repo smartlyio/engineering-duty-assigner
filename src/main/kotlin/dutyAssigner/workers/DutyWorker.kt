@@ -3,8 +3,10 @@ package dutyAssigner.workers
 import dutyAssigner.Event
 import dutyAssigner.ICalendar
 import dutyAssigner.services.ActivityService
+import dutyAssigner.services.DutyService
 import flowdock.IFlowdockAPI
 import flowdock.model.Activity
+import flowdock.model.Author
 import java.time.DayOfWeek
 import java.time.LocalDate
 import org.koin.standalone.KoinComponent
@@ -31,8 +33,7 @@ class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
     }
 
     private fun performForWeek(start: LocalDate) {
-        val end = start.plusDays(6)
-        val events = calendar.events(start, end)
+        val events = DutyService.eventsForWeek(start)
 
         val activity = createFlowdockActivity(start, events)
         if (activity != null) {
@@ -46,7 +47,7 @@ class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
         if (unassignedDuties.isEmpty()) {
             return null
         } else {
-            return ActivityService.createActivityFromEvents(start, unassignedDuties)
+            return ActivityService.createActivityFromEvents("Updated thread", Author(name = "Bob"), start, unassignedDuties)
         }
     }
 }

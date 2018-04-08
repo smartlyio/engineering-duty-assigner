@@ -2,6 +2,7 @@ package dutyAssigner.services
 
 
 import dutyAssigner.Event
+import flowdock.model.Author
 import flowdock.model.Thread
 import flowdock.model.UpdateAction
 import org.amshove.kluent.shouldEqual
@@ -14,7 +15,7 @@ import java.time.LocalDate
 class ActivityServiceSpec : Spek({
     describe("createActivityFromEvents") {
         it("contains basic info") {
-            val activity = ActivityService.createActivityFromEvents(LocalDate.parse("2018-04-02"), emptyList())
+            val activity = ActivityService.createActivityFromEvents( "Updated thread", Author(name = "Bob"), LocalDate.parse("2018-04-02"), emptyList())
             activity.title shouldEqual "Updated thread"
             activity.author.name shouldEqual "Bob"
             activity.thread.title shouldEqual "Support duties for 2018-04-02"
@@ -25,7 +26,7 @@ class ActivityServiceSpec : Spek({
             val events = listOf(
                 Event("1", Instant.parse("2018-04-02T09:00:00.00Z"), Instant.parse("2018-04-02T17:00:00.00Z"), "Oskari", "Investigator: X")
             )
-            val activity = ActivityService.createActivityFromEvents(LocalDate.parse("2018-04-02"), events)
+            val activity = ActivityService.createActivityFromEvents("Updated thread", Author(name = "Bob"), LocalDate.parse("2018-04-02"), events)
             activity.thread.status!! shouldEqual Thread.Status("1 duties missing", "red")
         }
 
@@ -33,7 +34,7 @@ class ActivityServiceSpec : Spek({
             val events = listOf(
                 Event("1", Instant.parse("2018-04-02T09:00:00.00Z"), Instant.parse("2018-04-02T17:00:00.00Z"), "Oskari", "Investigator: X")
             )
-            val activity = ActivityService.createActivityFromEvents(LocalDate.parse("2018-04-02"), events)
+            val activity = ActivityService.createActivityFromEvents("Updated thread", Author(name = "Bob"), LocalDate.parse("2018-04-02"), events)
             activity.thread.actions!! shouldEqual listOf(
                 UpdateAction("Book 2018-04-02 Investigator: X", UpdateAction.Target("http://duty.ngrok.io/book/1", "POST"))
             )

@@ -12,10 +12,10 @@ import java.time.format.DateTimeFormatter
 const val HOST = "http://duty.ngrok.io" // TODO: Separate dev / test / prod
 
 object ActivityService {
-    fun createActivityFromEvents(start: LocalDate, events: List<Event>): Activity {
+    fun createActivityFromEvents(title: String, author: Author, start: LocalDate, events: List<Event>): Activity {
         return Activity(
-            title = "Updated thread",
-            author = Author(name = "Bob"),
+            title = title,
+            author = author,
             external_thread_id = start.format(DateTimeFormatter.ISO_DATE),
             thread = Thread(
                 title = "Support duties for ${start.format(DateTimeFormatter.ISO_DATE)}",
