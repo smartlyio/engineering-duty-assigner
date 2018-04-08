@@ -1,16 +1,15 @@
 package dutyAssigner.workers
 
 import dutyAssigner.Event
-import dutyAssigner.ICalendar
 import dutyAssigner.services.ActivityService
 import dutyAssigner.services.DutyService
 import flowdock.IFlowdockAPI
 import flowdock.model.Activity
 import flowdock.model.Author
-import java.time.DayOfWeek
-import java.time.LocalDate
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import java.time.DayOfWeek
+import java.time.LocalDate
 
 class DutyWorker(val weeksForward: Int = 2) : KoinComponent {
     var now = { LocalDate.now() }

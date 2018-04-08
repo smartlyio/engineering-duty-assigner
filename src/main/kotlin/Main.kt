@@ -40,7 +40,6 @@ fun main(args: Array<String>) {
 
     job.start()
 
-
     val server = embeddedServer(
         Netty,
         port = 8080,
